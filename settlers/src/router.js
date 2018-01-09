@@ -6,7 +6,8 @@ import Main from './components/Main.vue';
 import Username from './components/Username.vue';
 import Creategame from './components/Creategame.vue';
 import Currentgame from './components/Currentgame.vue';
-import Joingame from './components/Joingame.vue'
+import Joingame from './components/Joingame.vue';
+import Stats from './components/Stats.vue'
 
 const router = new vueRouter({
   mode: 'history',
@@ -42,6 +43,11 @@ const router = new vueRouter({
     {
       path: '/joingame',
       component: Joingame,
+      props: true
+    },
+    {
+      path: '/stats',
+      component: Stats,
       props: true
     }
   ]

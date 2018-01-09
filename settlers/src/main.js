@@ -7,7 +7,9 @@ import firebaseui from 'firebaseui'
 import {
   config
 } from './connection/config.js'
+import Vuetify from 'vuetify'
 
+Vue.use(Vuetify)
 Vue.use(VueRouter)
 
 new Vue({

@@ -1,20 +1,65 @@
 <template>
   <div id="main">
-    <h1>{{msg}}</h1>
-    <h3>Game Name: {{gameName}}</h3>
-    <h3>Game ID: {{game_id}}</h3>
-    <div class="gameList" v-for="(player, index) in players">
+    <v-container>
+      <v-layout column>
+        <div>
+          <h1 class="display-1" v-if="beforeStart">Game Name: {{gameName}}</h1>
+          <h1 class="display-1" v-if="beforeStart">Game ID: {{game_id}}</h1>
+        </div>
+      </v-layout>
+      <div class="validateError" v-if="validateTrue">
+        <h2 clas="display-3">{{errMessage}}</h2>
+      </div>
+    </v-container>
+    <div class="gameList ma-2" v-for="(player, index) in players">
       <div class="row">
-      <h1>{{player.username}}</h1><h2 v-if="finalize">Score: </h2><input v-show="finalize" type="text" v-model="players[index].score"><button v-if="beforeStart" @click='deletePlayer(player)'>X</button>
+        <h2 class="gameUser display-2 ma-2 pa-2">{{player.username}}</h2><input class="input score display-2 ma-2 pa-2" v-show="finalize" type="text" v-model="players[index].score"><v-btn v-if="beforeStart" class="yellow" @click='deletePlayer(player)'><v-icon>X</v-icon></v-btn>
       </div>
     </div>
     <br></br>
-    <button v-if="beforeStart" @click="updateLobby">Update Lobby</button>
-    <button v-if="beforeStart" @click="startGame">Start Game</button>
-    <button v-if="afterStart" @click="startScore">Finalize Scores</button>
-    <button v-if="finalize" @click="confirmScore">Confirm Scores</button>
+    <v-btn color="yellow" v-if="beforeStart" @click="updateLobby">Update Lobby</v-btn>
+    <v-btn color="yellow" v-if="beforeStart" @click="startGame">Start Game</v-btn>
+    <v-btn color="yellow" v-if="afterStart" @click="startScore">Finalize Scores</v-btn>
+    <v-btn color="yellow" v-if="finalize" @click="confirmScore">Confirm Scores</v-btn>
     <br></br>
-    <button @click="cancelGame">Cancel Game</button>
+    <v-btn color="yellow" @click="cancelGame">Cancel Game</v-btn>
+    <template>
+      <v-layout column>
+        <v-dialog v-model="dialog" persistent max-width="650">
+          <!-- <v-btn color="primary" dark slot="activator">Open Dialog</v-btn> -->
+          <v-card class="modalStyle">
+            <v-card-title class="display-2">{{modalMessage}}
+            </v-card-title>
+            <!-- <h2 class="display-1 playerName">Players may not be added once the game has begun.</h2> -->
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn class="redButton centerButton" @click.native="dialog = false">Wait, nevermind</v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="yellow centerButton" @click="confirmGameStart">Confirm</v-btn>
+                <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </template>
+    <template>
+      <v-layout column>
+        <v-dialog v-model="dialog2" persistent max-width="650">
+          <!-- <v-btn color="primary" dark slot="activator">Open Dialog</v-btn> -->
+          <v-card class="modalStyle">
+            <v-card-title class="display-2">{{modalMessage}}
+            </v-card-title>
+            <h2 class="display-2">{{modalMessage2}}</h2>
+            <!-- <h2 class="display-1 playerName">Players may not be added once the game has begun.</h2> -->
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green centerButton" @click="goHome">Okay</v-btn>
+                <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-layout>
+    </template>
   </div>
 </template>
 
@@ -66,17 +111,24 @@
     },
     data() {
       return {
-        msg: "Current Game",
+        msg: "Current Game:",
         id: '',
         players: [],
         finalize: false,
         beforeStart: true,
         afterStart: false,
-        scores: ''
+        scores: '',
+        dialog: false,
+        dialog2: false,
+        validateTrue: false,
+        errMessage: '',
+        modalMessage: '',
+        modalMessage2: ''
       }
     },
     methods: {
       deletePlayer: function(player) {
+        this.validateTrue = false;
         console.log(player.game_id);
         console.log(player.user_id);
         axios.post('http://localhost:3000/deleteplayerfromgame',{game_id: player.game_id, user_id: player.user_id})
@@ -89,6 +141,7 @@
         })
       },
       updateLobby: function () {
+        this.validateTrue = false;
         console.log('working');
         axios.post('http://localhost:3000/waiting', {game_id: this.game_id})
           .then((response) => {
@@ -102,37 +155,52 @@
           })
       },
       startGame: function() {
-        // alert('are you sure you want to start a game? no more players can be added after game start.')
+        this.validateTrue = false
         if(this.players.length < 3) {
-          console.log('not enought players to start game');
+          this.errMessage = 'Sorry. You need at least three players to start a game'
+          this.validateTrue = true;
           return
         }
         if(this.players.length > 6) {
-          console.log('too many players. only six can play a game');
+          this.errMessage = 'Sorry. You can have a maximum of 6 players. Please remove one player from the game.'
+          this.validateTrue = true;
         }
+        this.modalMessage = 'Are you sure you want to start a new game? Players may not be added once the game has begun.'
+        this.dialog = true;
+     },
+     confirmGameStart: function() {
         this.beforeStart = !this.beforeStart
         this.afterStart = !this.afterStart
+        this.dialog = false;
       },
       startScore: function() {
         this.afterStart = !this.afterStart
         this.finalize = !this.finalize
       },
       confirmScore: function() {
+        this.validateTrue = false;
+        //looping through to make sure they have inputed scores correctly
         for(let x = 0; x < this.players.length; x++) {
         if(this.players[x].score === '') {
-          console.log('score cannot be zero');
+          this.errMessage = `${this.players[x].username}'s score is empty. Please enter a valid score between 2-14`;
+          this.validateTrue = true;
           return
         }
         if(this.players[x].score < 2 || this.players[x].score > 14) {
-        console.log(this.players[x].username + ' does not have a valid score.  Please enter score between 2-14');
-        return
+          this.errMessage = `${this.players[x].username} does not have a valid score.  Please enter score between 2-14`;
+          this.validateTrue = true;
+          return
         }
         if(isNaN(this.players[x].score)) {
-          console.log(this.players[x].score + ' score is not a number. please enter a number (no text)');
+          this.errMessage = `${this.players[x].username}'s score is not a number. please enter a number (no text)`;
+          this.validateTrue = true;
           return
         }
       }
+      //putting users into an array to send them through axios call
         let ranker = []
+        this.modalMessage = ''
+        // let this = this
         for (let x = 0; x < this.players.length; x++) {
           ranker.push(this.players[x])
         }
@@ -140,17 +208,20 @@
           .then((response) => {
             console.log(response);
             if(response.data.code) {
-              console.log('sorry this game did not record. please try again');
+              this.modalMessage = 'Sorry, this game did not record. Please try again. If problem persists, try creating a new game instance'
+              this.dialog = true;
             }
             axios.post('http://localhost:3000/closeGame', {game_id: this.game_id})
             .then((response) => {
               if(response.data.status === 'success') {
-                console.log('made it to the delete game');
-                this.$router.push('/home')
+                this.modalMessage2 = `Congratulations! Your game ${this.gameName} has been recorded. Make sure to check out your new stats!`
+                this.dialog2 = true;
+                // this.$router.push('/home')
               }
               else {
-                console.log('sorry. game did not record. try again and then contact administrator');
-                this.$router.push('/home')
+                this.modalMessage2 = `Sorry but ${this.gameName} did not record.  Please try recreating the game instance`
+                this.dialog2 = true;
+                // this.$router.push('/home')
               }
             })
             .catch((err) => {
@@ -162,8 +233,24 @@
             console.log('this is where the error is');
           })
       },
+      goHome: function() {
+        this.$router.push('/home')
+      },
       cancelGame: function() {
         console.log('cancelling!');
+        console.log(this.game_id);
+        axios.post('http://localhost:3000/cancelgame', {game_id: this.game_id})
+        .then((response) => {
+          if(response.data.status === 'success') {
+            console.log('game deleted');
+          }
+          else {
+            console.log('game not delted');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       }
     },
   }

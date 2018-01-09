@@ -168,7 +168,7 @@ app.post('/deleteplayerfromgame', (req, res) => {
 //non-game-owning players find game by typing in game name first, then goes to join post up abobe
 app.post('/joingamename', (req, res) => {
   console.log(req.body);
-  db.query(`SELECT * FROM game_created WHERE game_name ="${req.body.game_name}"`, (err, results) => {
+  db.query(`SELECT * FROM game_created WHERE game_name ="${req.body.game_name}" AND status = 0`, (err, results) => {
     if (err) {
       console.log('error retrieving game by name');
       console.log(err);
@@ -252,6 +252,57 @@ app.post('/closeGame', (req, res) => {
       res.send({
         status: 'success'
       })
+    }
+  })
+})
+
+app.post('/cancelgame', (req, res) => {
+  console.log(req.body);
+  const tables = ['game_created', 'waiting_room']
+  let counter = 0;
+  for (let x = 0; x < tables.length; x++) {
+    db.query(`DELETE FROM ${tables[x]} WHERE game_id = ${req.body.game_id}`, (err, results) => {
+      if (err) {
+        if (counter < 1) {
+          console.log(counter);
+          counter++
+
+          console.log(err);
+          console.log(tables[x]);
+        } else {
+          res.send({
+            status: 'err'
+          })
+          console.log('error deleting game instance');
+        }
+      } else {
+        console.log(counter);
+        if (counter < 1) {
+
+          counter++
+
+          console.log(results);
+          console.log(tables[x]);
+        } else {
+          console.log('successfully deleted game isntance');
+          res.send({
+            status: 'success'
+          })
+        }
+      }
+    })
+  }
+})
+
+app.post('/playerstats', (req, res) => {
+  console.log(req.body);
+  db.query(`SELECT * FROM game_results WHERE user_id = "${req.body.auth_id}"`, (err, results) => {
+    if (err) {
+      console.log(err);
+      res.send(err)
+    } else {
+      console.log(results);
+      res.send(results)
     }
   })
 })

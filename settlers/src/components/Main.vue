@@ -1,9 +1,16 @@
 <template>
   <div id="main">
-    <h1>{{msg}}</h1>
-    <h4>{{test}}</h4>
-    <input v-model="test" type="text">
-    <button @click="change">Click</button>
+    <h1 class="display-3 ma-3">{{msg}}</h1>
+    <div class="logo">
+      <div ></div>
+      <div class="hexagon">
+        <span class="logoSpan">
+          <h1 class="images pa-1 ma-1">THIS IS A NEW DIV</h1>
+          <h2 class="images pa-1 ma-1">This is a second div</h2>
+        </span>
+      </div>
+      <div></div>
+    </div>
   </div>
 </template>
 
@@ -12,7 +19,7 @@
     name: 'Main',
     data() {
       return {
-        msg: "Main page",
+        msg: "Welcome to Settle-Ours!",
         test: '',
       }
     },

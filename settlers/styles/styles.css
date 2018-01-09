@@ -1,0 +1,223 @@
+ * {
+   /*background-color: #C6362C;*/
+   font-family: Georgia, sans-serif;
+   font-weight: bold;
+   text-align: center;
+   box-sizing: border-box;
+ }
+
+body {
+  background-color: #C6362C;
+}
+h1 {
+  color: #FCDD5C;
+  text-align: center;
+}
+
+
+.nav {
+  background-color: #FCDD5C;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navItem {
+  padding: 1em;
+  flex: 1;
+}
+
+.logout {
+  flex: 1;
+}
+.logout:hover {
+  background-color: #d6bc4f;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.5em;
+}
+
+a:visited{
+  color: black;
+  text-decoration: none;
+}
+
+label {
+  text-align: center;
+}
+
+v-btn {
+  background-color: #FCDD5C;
+}
+
+body, html {
+  height: 100%;
+}
+
+.mainComponent {
+  height: 100%;
+}
+.routerView {
+  background-color: #C6362C;
+  height: 100%;
+  /*height: 500px;*/
+}
+
+.input {
+  width: 50%;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  margin: auto;
+  background-color: white;
+  border: 4px solid yellow;
+}
+
+.inputBox {
+
+}
+
+.spacer {
+  margin-top: 4em
+}
+
+.validateError {
+  width: 50%;
+  margin: 1em auto;
+  border: 4px solid yellow;
+  padding: 1em;
+  background-color: white;
+  color: red;
+}
+
+
+.modalStyle {
+  background-color: white;
+  border: 4px solid black;
+  text-align: center;
+}
+
+.dialog__content__active {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.playerName {
+  background-color:#C6362C;
+  color: yellow;
+  display: inline-block;
+  border: 4px solid black;
+  padding: .3em;
+  min-height: 50px;
+  width: 80%;
+}
+
+.redButton {
+  background-color: #C6362C;
+}
+
+.gameList {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  max-width: 70%;
+  margin: auto !important;
+}
+
+.gameUser {
+  background-color: white;
+  border: 4px solid yellow;
+  flex: 5;
+  min-width: 500px;
+}
+
+.score {
+  max-width: 100px;
+}
+
+.hexagon {
+  position: relative;
+  width: 400px;
+  height: 230.94px;
+  background-color: yellow;
+  margin: 125.47px 0;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  border-left: solid 4px #333333;
+  border-right: solid 4px #333333;
+}
+
+.hexagon:before,
+.hexagon:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 282.84px;
+  height: 282.84px;
+  -webkit-transform: scaleY(0.5774) rotate(-45deg);
+  -ms-transform: scaleY(0.5774) rotate(-45deg);
+  transform: scaleY(0.5774) rotate(-45deg);
+  background-color: inherit;
+  left: 54.5786px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
+.hexagon:before {
+  top: -141.4214px;
+  border-top: solid 5.6569px #333333;
+  border-right: solid 5.6569px #333333;
+}
+
+.hexagon:after {
+  bottom: -141.4214px;
+  border-bottom: solid 5.6569px #333333;
+  border-left: solid 5.6569px #333333;
+}
+
+/*cover up extra shadows*/
+.hexagon span {
+  /*display: block;*/
+  position: absolute;
+  top:2.309401076758503px;
+  left: 0;
+  width:392px;
+  height:226.3213px;
+  z-index: 2;
+  background: inherit;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoSpan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid black
+}
+.images {
+  flex:1;
+  border: 2px solid black;
+}
+
+.statsTable {
+  width: 40%;
+  margin: 2em auto;
+}
+
+th {
+  background-color: #FCDD5C;
+  border: 2px solid black;
+  margin: 0 auto;
+  text-align: center;
+}
+
+td {
+  border: 2px solid black;
+  background-color: white;
+  margin: 0 auto;
+}

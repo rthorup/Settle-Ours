@@ -1,16 +1,16 @@
 <template>
   <div id="main">
-    <h1>{{msg}}</h1>
-    <h2>Welcome, {{username}}</h2>
-    <button @click="startGame" v-if="startButton">Create Game</button>
-    <button @click="resumeGame" v-if="resumeButton">Resume Game</button>
-    <button @click="joinGame">Join Game</button>
-    <button>Compare Stats</button>
+    <h1 class="display-2 mt-5 pa-5">Welcome, {{username}}</h1>
+    <v-btn class="yellow" @click="startGame" v-if="startButton">Create Game</v-btn>
+    <v-btn class="yellow" @click="resumeGame" v-if="resumeButton">Resume Game</v-btn>
+    <v-btn class="yellow" @click="joinGame">Join Game</v-btn>
+    <v-btn class="yellow" @click="compareStats">Compare Stats</v-btn>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+
 import axios from 'axios'
   export default {
     name: 'Main',
@@ -47,7 +47,8 @@ import axios from 'axios'
         msg: "Home page",
         id: '',
         startButton: false,
-        resumeButton: false
+        resumeButton: false,
+
       }
     },
     methods: {
@@ -62,6 +63,10 @@ import axios from 'axios'
       joinGame: function() {
         console.log('joining');
         this.$router.push('/joingame')
+      },
+      compareStats: function() {
+        console.log('comparing');
+        this.$router.push('/stats')
       }
     }
   }

@@ -1,20 +1,20 @@
 <template>
-  <div id="app">
+  <div class="mainComponent" id="app">
     <nav class="nav">
-      <div>{{username}}</div>
-      <div><router-link to="/home">Home</router-link></div>
-      <div><router-link to="/username">Username</router-link></div>
-      <div><router-link to="/">Main</router-link></div>
-      <div class="logout" @click="logout">Logout</div>
+      <div lg4 xs12 class="navItem"><h2>{{username}}</h2></div>
+      <div lg4 xs12 class="navItem"></div>
+      <div lg4 xs12 class="navItem"><router-link to="home">Home</router-link></div>
+      <div lg4 xs12 class="navItem"></div>
+      <div lg4 xs12 class="navItem logout" @click="logout"><h2>Logout</h2></div>
     </nav>
-    <router-view
+    <transition name="fade"><router-view class="routerView"
       @captureUserName="captureUserName"
       @captureGameId="captureGameId"
       @captureGameName="captureGameName"
       :username="username"
       :gameName="gameName"
       :game_id="game_id">
-    </router-view>
+    </router-view></transition>
   </div>
 </template>
 
@@ -56,42 +56,12 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
 
 }
-.logout:hover {
-  background-color: grey;
-  color:white;
-}
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-nav div {
-  flex: 1;
-}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
 }
 </style>
