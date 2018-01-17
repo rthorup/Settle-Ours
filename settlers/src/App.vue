@@ -1,21 +1,23 @@
 <template>
-  <div class="mainComponent" id="app">
-    <nav class="nav">
-      <div lg4 xs12 class="navItem"><h2>{{username}}</h2></div>
-      <div lg4 xs12 class="navItem"></div>
-      <div lg4 xs12 class="navItem"><router-link to="home">Home</router-link></div>
-      <div lg4 xs12 class="navItem"></div>
-      <div lg4 xs12 class="navItem logout" @click="logout"><h2>Logout</h2></div>
-    </nav>
-    <transition name="fade"><router-view class="routerView"
-      @captureUserName="captureUserName"
-      @captureGameId="captureGameId"
-      @captureGameName="captureGameName"
-      :username="username"
-      :gameName="gameName"
-      :game_id="game_id">
-    </router-view></transition>
-  </div>
+  <v-app class="vApp">
+    <div class="mainComponent" id="app">
+        <nav class="nav">
+          <div class="navItem"><h2>{{username}}</h2></div>
+          <div class="navItem"></div>
+          <div class="navItem mobileNavItem logout"><router-link to="home">Home</router-link></div>
+          <div class="navItem mobileNavItem"></div>
+          <div class="navItem mobileNavItem logout" @click="logout"><h2>Logout</h2></div>
+        </nav>
+        <transition name="fade"><router-view class="routerView"
+          @captureUserName="captureUserName"
+          @captureGameId="captureGameId"
+          @captureGameName="captureGameName"
+          :username="username"
+          :gameName="gameName"
+          :game_id="game_id">
+        </router-view></transition>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -28,29 +30,25 @@ export default {
       username: '',
       game_id: '',
       gameName: '',
-      ui: ''
+      clicked: true
     }
   },
   methods: {
     logout: function() {
-      console.log('working');
       firebase.auth().signOut();
       this.username = ''
       this.game_id = ''
-      this.$router.push('/login')
+      this.$router.push('/')
     },
     captureUserName: function(capturedName) {
-      // console.log('capturing username');
       this.username = capturedName
     },
-    captureGameName: function(capturedGameName) {
-      // console.log('capturing game name');
+    captureGameName: function(capturedGameName) {;
       this.gameName = capturedGameName
     },
     captureGameId: function (capturedGameId) {
-      console.log('capturing game id');
       this.game_id = capturedGameId
-    }
+    },
   }
 }
 </script>

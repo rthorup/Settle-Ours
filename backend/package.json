@@ -1,8 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "First deployment of Settle-Ours app",
   "main": "app.js",
+  "engines": {
+    "node": "8.9.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

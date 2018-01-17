@@ -1,10 +1,13 @@
 <template>
-  <div id="main">
-    <h1 class="display-2 mt-5 pa-5">Welcome, {{username}}</h1>
-    <v-btn class="yellow" @click="startGame" v-if="startButton">Create Game</v-btn>
-    <v-btn class="yellow" @click="resumeGame" v-if="resumeButton">Resume Game</v-btn>
-    <v-btn class="yellow" @click="joinGame">Join Game</v-btn>
-    <v-btn class="yellow" @click="compareStats">Compare Stats</v-btn>
+  <div class="auth" id="main">
+    <h1 class="display-3 mt-0 pa-4 fullWidth">Welcome, {{username}}</h1>
+    <h1 class="display-1 mt-0 pa-4 mobileWidth">Welcome, {{username}}</h1>
+    <div class="logoSpan mt-5">
+      <v-btn class="yellow ma-2" @click="startGame" v-if="startButton">Create Game</v-btn>
+      <v-btn class="yellow ma-2" @click="resumeGame" v-if="resumeButton">Resume Game</v-btn>
+      <v-btn class="yellow ma-2" @click="joinGame">Join Game</v-btn>
+      <v-btn class="yellow ma-2" @click="compareStats">See Stats</v-btn>
+    </div>
   </div>
 </template>
 
@@ -16,20 +19,20 @@ import axios from 'axios'
     name: 'Main',
     props: ['gameName', 'game_id', 'username'],
     created () {
+      //checking for username and redirecting to get it
       if(this.username === "") {
         this.$router.push('/username')
       }
+      //checking for user. if user, check for open game. else make them login
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           this.id = user.uid
-          axios.post('http://localhost:3000/gamecheck', {auth_id: this.id})
+          axios.post('https://settle-ours.herokuapp.com/gamecheck', {auth_id: this.id})
           .then((results) => {
-            console.log(results.data.status);
             if(results.data.status === false) {
               this.resumeButton = !this.resumeButton
               return
             } else {
-              console.log('ready to start game');
               this.startButton = !this.startButton
             }
           })
@@ -53,19 +56,15 @@ import axios from 'axios'
     },
     methods: {
       startGame: function () {
-        console.log('starting!');
         this.$router.push('/creategame')
       },
       resumeGame: function() {
-        console.log('working');
         this.$router.push('/currentgame')
       },
       joinGame: function() {
-        console.log('joining');
         this.$router.push('/joingame')
       },
       compareStats: function() {
-        console.log('comparing');
         this.$router.push('/stats')
       }
     }

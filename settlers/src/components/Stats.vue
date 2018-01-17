@@ -1,27 +1,31 @@
+<!-- page that shows users past games -->
 <template>
   <div id="stats">
-    <h1 class="display-2 ma-3">{{msg}}</h1>
+    <h1 class="display-2 mt-0 pa-4">{{msg}}</h1>
     <div class="validateError" v-if="validateTrue">
       <h2 clas="display-3">{{errMessage}}</h2>
     </div>
     <div class="gameList">
       <div class="gameUser">
-        <h2 class="display-1 pa-1 ma-1">Hello, {{username}}!</h2>
-        <h2 class="display-1 pa-1 ma-1">You have won {{firstPlaces}} games out of a total of {{totalGames}}</h2>
-        <h2 class="display-1 pa-1 ma-1">Win percentage: {{winPercent}}%!</h2>
+        <h2 class="display-1 pa-1 ma-1 fullWidth">Hello, {{username}}!</h2>
+        <h2 class="display-1 pa-1 ma-1 fullWidth">You have won {{firstPlaces}} games out of a total of {{totalGames}}</h2>
+        <h2 class="display-1 pa-1 ma-1 fullWidth">Win percentage: {{winPercent}}%!</h2>
+        <h2 class="title pa-1 ma-1 mobileWidth">Hello, {{username}}!</h2>
+        <h2 class="title pa-1 ma-1 mobileWidth">You have won {{firstPlaces}} games out of a total of {{totalGames}}</h2>
+        <h2 class="title pa-1 ma-1 mobileWidth">Win percentage: {{winPercent}}%!</h2>
       </div>
     </div>
     <div>
       <table class="statsTable">
         <tr class="tableHeader">
-          <th class="display-2 pa-2">Game ID</th>
-          <th class="display-2 pa-2">Score</th>
-          <th class="display-2 pa-2">Place</th>
+          <th class="pa-2">Game ID</th>
+          <th class="pa-2">Score</th>
+          <th class="pa-2">Place</th>
         </tr>
         <tr v-for="stat in stats">
-          <td class="display-2 pa-2">{{stat.game_id}}</td>
-          <td class="display-2 pa-2">{{stat.score}}</td>
-          <td class="display-2 pa-2">{{stat.place}}</td>
+          <td class="pa-2">{{stat.game_id}}</td>
+          <td class="pa-2">{{stat.score}}</td>
+          <td class="pa-2">{{stat.place}}</td>
         </tr>
       </table>
     <div></div>
@@ -37,12 +41,12 @@ import axios from 'axios'
     name: 'Stats',
     props: ['gameName', 'game_id', 'username'],
     created () {
+      //checking for user and making call for user results
       firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.id = user.uid
-        axios.post('http://localhost:3000/playerstats', {auth_id: this.id})
+        axios.post('https://settle-ours.herokuapp.com/playerstats', {auth_id: this.id})
         .then((results) => {
-          console.log(results.data);
           if(results.data.length !==0) {
             this.stats = results.data
             this.totalGames = results.data.length
@@ -54,7 +58,6 @@ import axios from 'axios'
               }
             }
             else {
-              console.log(firstPlaces);
               this.firstPlaces = firstPlaces
               let number = firstPlaces/results.data.length.toFixed(2)
               this.winPercent = number.toFixed(2)*100;
@@ -71,6 +74,7 @@ import axios from 'axios'
         });
       }
       else {
+        //redirecting if not logged in
         this.$router.push('/login')
       }
     })

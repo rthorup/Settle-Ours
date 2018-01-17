@@ -1,19 +1,41 @@
  * {
-   /*background-color: #C6362C;*/
+   /*background-color: #C53D38;*/
    font-family: Georgia, sans-serif;
    font-weight: bold;
    text-align: center;
    box-sizing: border-box;
  }
+.vApp {
+  background-color: blue;
+}
+
+
+body, html {
+  height: 100%;
+}
+
+.mainComponent {
+  height: 100%;
+  background-color: #C53D38;
+}
+
+.routerView {
+  background-color: #C53D38;
+  height: 100%;
+}
 
 body {
-  background-color: #C6362C;
+  background-color: #C53D38;
 }
+
 h1 {
   color: #FCDD5C;
   text-align: center;
 }
 
+p {
+  line-height: 1.3;
+}
 
 .nav {
   background-color: #FCDD5C;
@@ -22,6 +44,12 @@ h1 {
   align-items: center;
 }
 
+.mobileNav {
+  display: none;
+  background-color: #FCDD5C;
+  justify-content: center;
+  align-items: center
+}
 .navItem {
   padding: 1em;
   flex: 1;
@@ -36,7 +64,7 @@ h1 {
 }
 a {
   text-decoration: none;
-  color: black;
+  color: black !important;
   font-size: 1.5em;
 }
 
@@ -45,25 +73,14 @@ a:visited{
   text-decoration: none;
 }
 
+.auth {
+  background-image: url('/src/assets/catan.jpg');
+  background-position: center;
+  backgroun  <h2><d-repeat: no-repeat;
+  background-size: cover;
+}
 label {
   text-align: center;
-}
-
-v-btn {
-  background-color: #FCDD5C;
-}
-
-body, html {
-  height: 100%;
-}
-
-.mainComponent {
-  height: 100%;
-}
-.routerView {
-  background-color: #C6362C;
-  height: 100%;
-  /*height: 500px;*/
 }
 
 .input {
@@ -73,14 +90,6 @@ body, html {
   margin: auto;
   background-color: white;
   border: 4px solid yellow;
-}
-
-.inputBox {
-
-}
-
-.spacer {
-  margin-top: 4em
 }
 
 .validateError {
@@ -104,7 +113,7 @@ body, html {
 }
 
 .playerName {
-  background-color:#C6362C;
+  background-color:#C53D38;
   color: yellow;
   display: inline-block;
   border: 4px solid black;
@@ -114,7 +123,7 @@ body, html {
 }
 
 .redButton {
-  background-color: #C6362C;
+  background-color: #C53D38 !important;
 }
 
 .gameList {
@@ -137,56 +146,6 @@ body, html {
   max-width: 100px;
 }
 
-.hexagon {
-  position: relative;
-  width: 400px;
-  height: 230.94px;
-  background-color: yellow;
-  margin: 125.47px 0;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-  border-left: solid 4px #333333;
-  border-right: solid 4px #333333;
-}
-
-.hexagon:before,
-.hexagon:after {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  width: 282.84px;
-  height: 282.84px;
-  -webkit-transform: scaleY(0.5774) rotate(-45deg);
-  -ms-transform: scaleY(0.5774) rotate(-45deg);
-  transform: scaleY(0.5774) rotate(-45deg);
-  background-color: inherit;
-  left: 54.5786px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-}
-
-.hexagon:before {
-  top: -141.4214px;
-  border-top: solid 5.6569px #333333;
-  border-right: solid 5.6569px #333333;
-}
-
-.hexagon:after {
-  bottom: -141.4214px;
-  border-bottom: solid 5.6569px #333333;
-  border-left: solid 5.6569px #333333;
-}
-
-/*cover up extra shadows*/
-.hexagon span {
-  /*display: block;*/
-  position: absolute;
-  top:2.309401076758503px;
-  left: 0;
-  width:392px;
-  height:226.3213px;
-  z-index: 2;
-  background: inherit;
-}
-
 .logo {
   display: flex;
   justify-content: center;
@@ -197,11 +156,15 @@ body, html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid black
+  justify-content: center;
+  /*border: 2px solid black*/
 }
+
 .images {
   flex:1;
-  border: 2px solid black;
+  /*border: 2px solid black;*/
+  max-height: 50px;
+  min-width: 200px;
 }
 
 .statsTable {
@@ -214,10 +177,79 @@ th {
   border: 2px solid black;
   margin: 0 auto;
   text-align: center;
+  font-size: 40px;
 }
 
 td {
   border: 2px solid black;
   background-color: white;
   margin: 0 auto;
+  font-size: 40px;
+}
+
+.mobileWidth {
+  display: none;
+}
+
+.about {
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .xsButton {
+    min-width: 200px;
+  }
+  .row{
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .gameUser {
+    flex:1;
+    min-width: 300px;
+  }
+  .btn {
+    /*max-width: 50px;*/
+    max-height: 30px;
+  }
+
+  .navItem {
+    display: none;
+  }
+
+  .mobileNavItem {
+    display: flex;
+    flex:1;
+  }
+
+  .input {
+    width: 90%;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin: auto;
+    background-color: white;
+    border: 4px solid yellow;
+  }
+  .fullWidth {
+    display: none;
+  }
+
+  .mobileWidth {
+    display: flex;
+    font-weight: bold;
+  }
+  .mobileNav {
+    display: flex;
+  }
+  .validateError {
+    width: 95%;
+  }
+  th, td {
+    font-size: 30px;
+  }
 }
