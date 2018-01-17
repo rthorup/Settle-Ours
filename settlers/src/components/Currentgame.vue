@@ -150,6 +150,22 @@
     },
     methods: {
       addPlayer: function() {
+        this.validateTrue = false
+        if (this.newPlayer == '') {
+          this.errMessage = 'Sorry. Player\'s name cannot be blank'
+          this.validateTrue = true;
+          this.dialog3 = false
+          this.newPlayer = ''
+          return
+        }
+
+        if (this.newPlayer.length < 3) {
+          this.errMessage = 'Sorry. Player names must be at least 3 characters long'
+          this.validateTrue = true;
+          this.dialog3 = false;
+          this.newPlayer = ''
+          return
+        }
         //allows game owner to make new player in game.
         axios.post('https://settle-ours.herokuapp.com/addPlayer', {username: this.newPlayer, game_id: this.game_id})
         .then((response) => {
