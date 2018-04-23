@@ -35,7 +35,7 @@ import firebase from 'firebase'
 import axios from 'axios'
   export default {
     name: 'Joingame',
-    props: ['gameName', 'game_id', 'username'],
+    props: ['gameName', 'game_id', 'username', 'url'],
     //checking for username or redirecting
     created () {
       if(this.username === "") {
@@ -75,7 +75,7 @@ import axios from 'axios'
         }
         if (this.joinGameName !== '') {
           //if they used gamename, check this first and capture game_id
-          axios.post('https://settle-ours.herokuapp.com/joingamename', {game_name: this.joinGameName})
+          axios.post(this.url +'/joingamename', {game_name: this.joinGameName})
           .then((response) => {
             if(response.data.length === 0) {
               this.errMessage = "Not a valid game name. Try reentering game name or search by game id"
@@ -83,7 +83,7 @@ import axios from 'axios'
               return
             };
             //then checking by game_id
-            axios.post('https://settle-ours.herokuapp.com/join', {auth_id: this.id, game_id: response.data[0].game_id, username: this.username})
+            axios.post(this.url +'/join', {auth_id: this.id, game_id: response.data[0].game_id, username: this.username})
             .then((response) => {
               if(response.data.code  === 'ER_DUP_ENTRY') {
                 this.errMessage = 'Sorry but it looks like you have already joined the game.'
@@ -108,7 +108,7 @@ import axios from 'axios'
         }
         if (this.joinGameId !== '') {
           //if they search by game_id
-          axios.post('https://settle-ours.herokuapp.com/join', {auth_id: this.id, game_id: this.joinGameId, username: this.username})
+          axios.post(this.url +'/join', {auth_id: this.id, game_id: this.joinGameId, username: this.username})
           .then((response) => {
             if(response.data.code  === 'ER_DUP_ENTRY') {
               this.errMessage = 'Sorry but it looks like you have already joined the game.'

@@ -17,7 +17,7 @@ import firebase from 'firebase'
 import axios from 'axios'
   export default {
     name: 'Main',
-    props: ['gameName', 'game_id', 'username'],
+    props: ['gameName', 'game_id', 'username', 'url'],
     created () {
       //checking for username and redirecting to get it
       if(this.username === "") {
@@ -27,7 +27,7 @@ import axios from 'axios'
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           this.id = user.uid
-          axios.post('https://settle-ours.herokuapp.com/gamecheck', {auth_id: this.id})
+          axios.post(this.url +'/gamecheck', {auth_id: this.id})
           .then((results) => {
             if(results.data.status === false) {
               this.resumeButton = !this.resumeButton

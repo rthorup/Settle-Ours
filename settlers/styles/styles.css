@@ -170,21 +170,41 @@ label {
 .statsTable {
   width: 40%;
   margin: 2em auto;
+  font-size: 40px;
+}
+.hoverData:hover td{
+  cursor: pointer;
+  background-color: #c4c9d1;
 }
 
+.resultsTable {
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: 2px solid black;
+}
+
+.resultsTable th {
+  font-size: 1.5em;
+  padding: 0;
+}
+
+.resultsTable td {
+  font-size: 1.5em;
+  padding: 0;
+  border: none;
+}
 th {
   background-color: #FCDD5C;
   border: 2px solid black;
   margin: 0 auto;
   text-align: center;
-  font-size: 40px;
+
 }
 
 td {
   border: 2px solid black;
   background-color: white;
   margin: 0 auto;
-  font-size: 40px;
 }
 
 .mobileWidth {

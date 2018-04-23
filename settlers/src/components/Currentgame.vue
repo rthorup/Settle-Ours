@@ -92,7 +92,7 @@
   import axios from 'axios'
   export default {
     name: 'Main',
-    props: ['gameName', 'game_id', 'username'],
+    props: ['gameName', 'game_id', 'username', 'url'],
     created () {
       //always on page load to get the users id
       firebase.auth().onAuthStateChanged((user) => {
@@ -100,7 +100,7 @@
           //set the user id
           this.id = user.uid
           //make a call to see which game is open on the users account
-          axios.post('https://settle-ours.herokuapp.com/gameid', {auth_id: this.id})
+          axios.post(this.url +'/gameid', {auth_id: this.id})
           .then((response) => {
             //set new variable to use in next call
             let gameId = response.data[0].game_id
@@ -110,7 +110,7 @@
           })
           //make a call to the open game to display table on page
           .then((response) => {
-            axios.post('https://settle-ours.herokuapp.com/waiting', {game_id: this.game_id})
+            axios.post(this.url + '/waiting', {game_id: this.game_id})
               .then((response) => {
                 //set the list of players in the data
                 this.players = response.data
@@ -167,7 +167,7 @@
           return
         }
         //allows game owner to make new player in game.
-        axios.post('https://settle-ours.herokuapp.com/addPlayer', {username: this.newPlayer, game_id: this.game_id})
+        axios.post(this.url +'/addPlayer', {username: this.newPlayer, game_id: this.game_id})
         .then((response) => {
           this.newPlayer = ''
           this.dialog3 = false
@@ -180,7 +180,7 @@
       deletePlayer: function(player) {
         //allows player to delete player from game
         this.validateTrue = false;
-        axios.post('https://settle-ours.herokuapp.com/deleteplayerfromgame',{game_id: player.game_id, user_id: player.user_id})
+        axios.post(this.url + '/deleteplayerfromgame',{game_id: player.game_id, user_id: player.user_id})
         .then((response) => {
           this.updateLobby()
         })
@@ -191,7 +191,7 @@
       updateLobby: function () {
         //updates lobby to check if new players have joined the game
         this.validateTrue = false;
-        axios.post('https://settle-ours.herokuapp.com/waiting', {game_id: this.game_id})
+        axios.post(this.url +'/waiting', {game_id: this.game_id})
           .then((response) => {
             //set the list of players in the data
             this.players = response.data
@@ -253,14 +253,14 @@
         for (let x = 0; x < this.players.length; x++) {
           ranker.push(this.players[x])
         }
-          axios.post('https://settle-ours.herokuapp.com/inputscore', {ranker})
+          axios.post(this.url +'/inputscore', {ranker})
           .then((response) => {
             if(response.data.code) {
               this.modalMessage = 'Sorry, this game did not record. Please try again. If problem persists, try creating a new game instance'
               this.dialog = true;
             }
             // after input score, this fires to close the game in game_created so owner can make new game
-            axios.post('https://settle-ours.herokuapp.com/closeGame', {game_id: this.game_id})
+            axios.post(this.url +'/closeGame', {game_id: this.game_id})
             .then((response) => {
               if(response.data.status === 'success') {
                 this.modalMessage2 = `Congratulations! Your game "${this.gameName}" has been recorded. Make sure to check out your new stats!`
@@ -285,7 +285,7 @@
       cancelGame: function() {
         //cancels game by deleting all records of game from tables
         this.modalMessage = ''
-        axios.post('https://settle-ours.herokuapp.com/cancelgame', {game_id: this.game_id})
+        axios.post(this.url +'/cancelgame', {game_id: this.game_id})
         .then((response) => {
           if(response.data.status === 'success') {
             this.modalMessage2 = 'Your game has successfully been cancelled'

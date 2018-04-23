@@ -46,6 +46,7 @@ app.post('/username', (req, res) => {
 //if user has firebaseid --> check to see if they have username and send results
 app.post('/usernamecheck', (req, res) => {
   let id = req.body.auth_id
+  console.log(id);
   db.query(`SELECT username FROM users WHERE auth_id = "${id}"`, (err, results) => {
     if (err) {
       console.log(err);
@@ -153,7 +154,7 @@ app.post('/deleteplayerfromgame', (req, res) => {
       console.log('error deleteplayerfromgame');
     } else {
       console.log('successfully deleted player');
-      res.send('Deleted player succesffully')
+      res.send('Deleted player successfully')
     }
   })
 })
@@ -282,6 +283,17 @@ app.post('/playerstats', (req, res) => {
       res.send(err)
     } else {
       console.log(results);
+      res.send(results)
+    }
+  })
+})
+
+// pulls the results of game that is clicked
+app.post('/game_stats', (req, res) => {
+  db.query(`SELECT game_results.username, game_results.score, game_results.place, game_created.game_name FROM game_results JOIN game_created ON game_results.game_id = game_created.game_id WHERE game_results.game_id = "${req.body.game_id}"`, (err, results) => {
+    if (err) {
+      res.send(err)
+    } else {
       res.send(results)
     }
   })

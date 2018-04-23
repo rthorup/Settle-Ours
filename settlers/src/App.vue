@@ -14,7 +14,8 @@
           @captureGameName="captureGameName"
           :username="username"
           :gameName="gameName"
-          :game_id="game_id">
+          :game_id="game_id"
+          :url = "url">
         </router-view></transition>
     </div>
   </v-app>
@@ -30,6 +31,8 @@ export default {
       username: '',
       game_id: '',
       gameName: '',
+      // url: 'http://localhost:3000',
+      url: 'https://settle-ours.herokuapp.com',
       clicked: true
     }
   },

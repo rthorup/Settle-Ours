@@ -34,16 +34,19 @@
   import firebase from 'firebase';
   import axios from 'axios';
   export default {
+    props: ['gameName', 'game_id', 'username', 'url'],
     created () {
+      // console.log(this.url)
+      // console.log("this is the url: "+ this.url);
+
       firebase.auth().onAuthStateChanged((user) => {
-        console.log(user);
         if (user) {
-          console.log('user found');
           this.displayName = user.displayName;
           this.id = user.uid
           this.email = user.email
+          console.log(this.username)
           //making a call right away to see if they have a username. if so, move on to the home page
-          axios.post('https://settle-ours.herokuapp.com/usernamecheck', {auth_id: this.id})
+          axios.post(this.url +'/usernamecheck', {auth_id: this.id})
               .then((response) => {
                 if (response.data.length !== 0) {
                   this.$emit('captureUserName', response.data[0].username)
@@ -56,12 +59,10 @@
         }
         else {
           console.log('no user?');
-          
         }
       });
     },
     name: 'Username',
-    props: ['gameName', 'game_id', 'username'],
     data() {
       return {
         msg: "Please select a username to proceed",
@@ -96,7 +97,7 @@
         confirmUser: function (id) {
         //modal to make sure user wants the username and is correct
         let thisData = this
-        axios.post('https://settle-ours.herokuapp.com/username', {auth_id: this.id, email: this.email, username: this.newName})
+        axios.post(this.url +'/username', {auth_id: this.id, email: this.email, username: this.newName})
           .then((response) => {
             if(response.data.status === false) {
             this.dialog = false;

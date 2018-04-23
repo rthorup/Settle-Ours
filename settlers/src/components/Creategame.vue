@@ -32,7 +32,7 @@
   import firebase from 'firebase';
   export default {
     name: 'Creategame',
-    props: ['gameName', 'game_id', 'username'],
+    props: ['gameName', 'game_id', 'username', 'url'],
     created () {
       //checking for user and capturing id. if none send back to login.
       firebase.auth().onAuthStateChanged((user) => {
@@ -81,20 +81,20 @@
         this.dialog = true;
       },
       confirmGame: function() {
-        axios.post('https://settle-ours.herokuapp.com/game', {auth_id: this.id, game_name: this.newGameName})
+        axios.post(this.url + "/game", {auth_id: this.id, game_name: this.newGameName})
             .then((response) => {
               // seeing if there is any err code in the returned data
               if(response.data.code) {
                 console.log(resonse.data.code);
               } else {
-                axios.post('https://settle-ours.herokuapp.com/gameid', {auth_id: this.id})
+                axios.post(this.url +'/gameid', {auth_id: this.id})
                 .then((response) => {
                   let gameId = response.data[0].game_id
                   // capturing as global variables
                   this.$emit('captureGameId', response.data[0].game_id)
                   this.$emit('captureGameName', this.newGameName)
                   // after successfully creating new game, automatically joins the user as first in game table.
-                  axios.post('https://settle-ours.herokuapp.com/join', {auth_id: this.id, game_id: gameId, username: this.username})
+                  axios.post(this.url +'/join', {auth_id: this.id, game_id: gameId, username: this.username})
                     .then((response) => {
                       //automatically redirects to current game page
                         this.$router.push('/currentgame')
