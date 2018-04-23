@@ -31,8 +31,8 @@ export default {
       username: '',
       game_id: '',
       gameName: '',
-      // url: 'http://localhost:3000',
-      url: 'https://settle-ours.herokuapp.com',
+      // your own connection to your backend
+      url: 'something here',
       clicked: true
     }
   },
